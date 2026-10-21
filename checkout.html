@@ -112,6 +112,33 @@
       background: var(--success);
       border-color: var(--success);
     }
+    .confirmation-box {
+      margin-top: 24px;
+      padding: 20px;
+      background: rgba(76, 175, 80, 0.15);
+      border: 1px solid #4caf50;
+      border-radius: 6px;
+      color: #ffffff;
+    }
+    .confirmation-box h3 {
+      font-size: 18px;
+      color: #81c784;
+      margin-bottom: 8px;
+    }
+    .confirmation-box p {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #e0e0e0;
+      margin-bottom: 12px;
+    }
+    .confirmation-details {
+      font-size: 13px;
+      color: #a5d6a7;
+      line-height: 1.6;
+      background: rgba(0, 0, 0, 0.25);
+      padding: 12px;
+      border-radius: 4px;
+    }
   </style>
 
   <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
@@ -124,18 +151,16 @@
   </script>
 
   <!-- Google Tag Manager -->
-  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE SCRIPT TAG BELOW -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  })(window,document,'script','dataLayer','GTM-KGTK8ZXX');</script>
   <!-- End Google Tag Manager -->
 </head>
 <body id="page-checkout" data-testid="page-checkout" data-step="step-5-checkout" data-ready="false">
   <!-- Google Tag Manager (noscript) -->
-  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE NOSCRIPT IFRAME BELOW -->
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KGTK8ZXX"
   height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <!-- End Google Tag Manager (noscript) -->
 
@@ -160,6 +185,11 @@
         <button class="btn-step btn-place" id="btn-place-order" data-testid="btn-place-order" aria-label="Place Order">
           Place Order
         </button>
+      </div>
+      <div id="order-confirmation" data-testid="order-confirmation" class="confirmation-box" style="display: none;">
+        <h3>Order Confirmed!</h3>
+        <p>Thank you for your order! Your purchase has been successfully processed.</p>
+        <div class="confirmation-details" id="confirmation-details"></div>
       </div>
     </div>
   </main>
@@ -248,29 +278,36 @@
           customer_type: "new"
         };
 
-        // Redirect guard and fallback logic (same as banner clicks)
-        let redirected = false;
-        function doRedirect() {
-          if (redirected) return;
-          redirected = true;
-          document.body.setAttribute("data-redirected", "true");
-          window.location.href = "index.html";
-        }
-
-        const fallbackTimer = setTimeout(doRedirect, CONFIG.REDIRECT_FALLBACK_MS);
-
-        // After the purchase push, clear cart and active_promo
-        push("purchase", purchaseFields, cart, {
-          eventCallback: function() {
-            clearTimeout(fallbackTimer);
-            doRedirect();
-          },
-          eventTimeout: CONFIG.REDIRECT_FALLBACK_MS
-        });
+        // Push purchase event
+        push("purchase", purchaseFields, cart);
 
         // Clear sessionStorage cart and active_promo
         sessionStorage.removeItem("cart");
         sessionStorage.removeItem("active_promo");
+
+        // Display on-page order confirmation message without redirecting
+        const confirmBox = document.getElementById("order-confirmation");
+        const confirmDetails = document.getElementById("confirmation-details");
+        if (confirmDetails) {
+          const itemsList = cart.map(item => `${item.item_name} (EUR ${item.price.toFixed(2)})`).join(", ");
+          confirmDetails.innerHTML = `
+            <div><strong>Transaction ID:</strong> ${transactionId}</div>
+            <div><strong>Order Subtotal:</strong> EUR ${cartTotal.toFixed(2)}</div>
+            <div><strong>Shipping:</strong> EUR 3.33 | <strong>Tax:</strong> EUR 1.11</div>
+            <div><strong>Total Paid:</strong> EUR ${(cartTotal + 3.33 + 1.11).toFixed(2)}</div>
+            <div><strong>Items Purchased:</strong> ${itemsList || "None"}</div>
+            <div style="margin-top: 8px; color: #81c784;"><strong>Status:</strong> Order Completed Successfully</div>
+          `;
+        }
+        if (confirmBox) {
+          confirmBox.style.display = "block";
+        }
+
+        // Update summary text
+        const summaryEl = document.getElementById("checkout-summary");
+        if (summaryEl) {
+          summaryEl.innerHTML = `<div style="color: #81c784; font-weight: 600;">Order complete! See confirmation details below.</div>`;
+        }
       });
     }
 

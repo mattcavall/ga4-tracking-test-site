@@ -2,7 +2,7 @@
 // ==================== CONFIG ====================
 // Plain configuration object at the top of shared.js
 const CONFIG = {
-  GTM_ID: "GTM-XXXXXXX",
+  GTM_ID: "GTM-KGTK8ZXX",
   CURRENCY: "EUR",
   LOCATION_ID: "ChIJIQBpAG2ahYAR_6128GcTUEo",
   EVENT_VIEW: "view_promotion",

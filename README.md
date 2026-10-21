@@ -50,7 +50,7 @@ A static test site for Google Analytics 4 (GA4) ecommerce promotion tracking and
 16. Click `btn-place-order` (`data-testid="btn-place-order"`):
     - Fires `purchase` with generated `transaction_id`, shipping (3.33), tax (1.11), and customer_type ("new").
     - Clears `cart` and `active_promo` from `sessionStorage`.
-    - Redirects back to `index.html`.
+    - Displays order confirmation message on page with transaction ID and order total (does not redirect).
 
 ### Test B: Separate Promotion Flow
 
@@ -113,12 +113,13 @@ window.testApi.reset();
 
 ## ASSUMPTIONS
 
-1. **GTM Container ID**: The site uses the placeholder `GTM-XXXXXXX` with clear comments in `<head>` and `<body>` on every HTML page indicating where a human can replace it with a production ID.
+1. **GTM Container ID**: The site is configured with container ID `GTM-KGTK8ZXX` across all pages.
 2. **Fallback Redirect**: The redirect fallback timer is set to 500ms (`CONFIG.REDIRECT_FALLBACK_MS`), which guarantees smooth page transitions even when the GTM container ID is a placeholder or blocked by ad blockers.
 3. **Storage Persistence**: `sessionStorage` is used to persist URL parameter overrides (`carry`, `creative`, `run`, `eventLevel`), active promotion attribution, and cart items between page navigations in the same tab.
 4. **Zero External Dependencies**: The entire project uses pure vanilla HTML, vanilla CSS, and vanilla JavaScript without any external libraries or build tools.
 5. **No Animations**: In strict accordance with stability rules, CSS transitions and animations are globally disabled (`transition: none !important; animation: none !important;`).
 6. **Key Ordering**: All item objects strictly follow the required 26-key sequence from `item_id` to `test_approach`. Numbers are always output as finite JSON numbers rounded to two decimal places.
+7. **Post-Purchase Display**: Per user instruction, the checkout page does not redirect to `index.html` after placing an order. Instead, it displays an on-page order confirmation box with transaction ID, items purchased, and order total so that the purchase event, dataLayer, and `window.testApi` can be inspected in place.
 
 ## MANUAL CHECK
 
@@ -138,5 +139,5 @@ To manually verify the complete flow if a test runner is not active:
 10. Click `Checkout`. On `checkout.html`, verify `begin_checkout` is pushed on load.
 11. Click `Add Shipping Info` -> verify `add_shipping_info` push.
 12. Click `Add Payment Info` -> verify `add_payment_info` push.
-13. Click `Place Order` -> verify `purchase` push, redirect to `index.html`.
+13. Click `Place Order` -> verify `purchase` push, and verify the order confirmation box appears on page with the transaction ID.
 14. Navigate back to `shop.html` and verify `view_item_list` now carries `no_promo` placeholder values.
