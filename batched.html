@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GA4 Promotion Test: Batched</title>
+  <meta name="description" content="Batched promotion test page for GA4 promotion tracking" />
+
+  <!-- Inline CSS: Layout order, strictly no animations or transitions -->
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: none !important;
+      animation: none !important;
+    }
+    :root {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --border-color: #333333;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --accent: #2196f3;
+      --banner-bg: #2a2a2a;
+      --banner-border: #444444;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+    }
+    header {
+      width: 100%;
+      max-width: 960px;
+      height: 80px;
+      max-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-bg);
+    }
+    h1 {
+      font-size: 22px;
+      color: var(--text);
+    }
+    .btn-home {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    #set-batch-atf, #set-batch-btf {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: row;
+      gap: 12px;
+      padding: 16px;
+    }
+    @media (max-width: 700px) {
+      #set-batch-atf, #set-batch-btf {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+    .banner {
+      flex: 1;
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      background: var(--banner-bg);
+      border: 1px solid var(--banner-border);
+      border-radius: 6px;
+      color: var(--text);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .banner-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .banner-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    #spacer-fold {
+      height: 150vh;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555555;
+      font-size: 14px;
+    }
+  </style>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      page_type: "batched",
+      test_variant: "batched"
+    });
+  </script>
+
+  <!-- Google Tag Manager -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE SCRIPT TAG BELOW -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body id="page-batched" data-testid="page-batched" data-step="step-2-test-page" data-ready="false" data-fold-set2-fired="false">
+  <!-- Google Tag Manager (noscript) -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE NOSCRIPT IFRAME BELOW -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <!-- 1. Header (height at most 100px) -->
+  <header>
+    <h1>Batched Promotion Test</h1>
+    <a href="index.html" id="link-home" data-testid="link-home" class="btn-home" aria-label="Home">Home</a>
+  </header>
+
+  <!-- 2. Above the fold (ATF) banner set -->
+  <div id="set-batch-atf" data-testid="set-batch-atf">
+    <a href="shop.html" class="banner" id="banner-batch-atf-1" data-testid="banner-batch-atf-1"
+       data-promotion-id="batch-atf-1" data-promotion-name="Batch ATF Promo 1"
+       data-creative-name="batch_atf_creative_1" data-creative-slot="batch_atf_slot_1"
+       data-item-id="SKU-BATCH-ATF-1" data-fold="atf" aria-label="Batch ATF Promo 1 batch-atf-1">
+      <span class="banner-title">Batch ATF Promo 1</span>
+      <span class="banner-sub">batch-atf-1</span>
+    </a>
+    <a href="shop.html" class="banner" id="banner-batch-atf-2" data-testid="banner-batch-atf-2"
+       data-promotion-id="batch-atf-2" data-promotion-name="Batch ATF Promo 2"
+       data-creative-name="batch_atf_creative_2" data-creative-slot="batch_atf_slot_2"
+       data-item-id="SKU-BATCH-ATF-2" data-fold="atf" aria-label="Batch ATF Promo 2 batch-atf-2">
+      <span class="banner-title">Batch ATF Promo 2</span>
+      <span class="banner-sub">batch-atf-2</span>
+    </a>
+    <a href="shop.html" class="banner" id="banner-batch-atf-3" data-testid="banner-batch-atf-3"
+       data-promotion-id="batch-atf-3" data-promotion-name="Batch ATF Promo 3"
+       data-creative-name="batch_atf_creative_3" data-creative-slot="batch_atf_slot_3"
+       data-item-id="SKU-BATCH-ATF-3" data-fold="atf" aria-label="Batch ATF Promo 3 batch-atf-3">
+      <span class="banner-title">Batch ATF Promo 3</span>
+      <span class="banner-sub">batch-atf-3</span>
+    </a>
+  </div>
+
+  <!-- 3. Spacer fold (height 150vh) -->
+  <div id="spacer-fold" data-testid="spacer-fold">Scroll down to view below-the-fold banners</div>
+
+  <!-- 4. Below the fold (BTF) banner set -->
+  <div id="set-batch-btf" data-testid="set-batch-btf">
+    <a href="shop.html" class="banner" id="banner-batch-btf-1" data-testid="banner-batch-btf-1"
+       data-promotion-id="batch-btf-1" data-promotion-name="Batch BTF Promo 1"
+       data-creative-name="batch_btf_creative_1" data-creative-slot="batch_btf_slot_1"
+       data-item-id="SKU-BATCH-BTF-1" data-fold="btf" aria-label="Batch BTF Promo 1 batch-btf-1">
+      <span class="banner-title">Batch BTF Promo 1</span>
+      <span class="banner-sub">batch-btf-1</span>
+    </a>
+    <a href="shop.html" class="banner" id="banner-batch-btf-2" data-testid="banner-batch-btf-2"
+       data-promotion-id="batch-btf-2" data-promotion-name="Batch BTF Promo 2"
+       data-creative-name="batch_btf_creative_2" data-creative-slot="batch_btf_slot_2"
+       data-item-id="SKU-BATCH-BTF-2" data-fold="btf" aria-label="Batch BTF Promo 2 batch-btf-2">
+      <span class="banner-title">Batch BTF Promo 2</span>
+      <span class="banner-sub">batch-btf-2</span>
+    </a>
+    <a href="shop.html" class="banner" id="banner-batch-btf-3" data-testid="banner-batch-btf-3"
+       data-promotion-id="batch-btf-3" data-promotion-name="Batch BTF Promo 3"
+       data-creative-name="batch_btf_creative_3" data-creative-slot="batch_btf_slot_3"
+       data-item-id="SKU-BATCH-BTF-3" data-fold="btf" aria-label="Batch BTF Promo 3 batch-btf-3">
+      <span class="banner-title">Batch BTF Promo 3</span>
+      <span class="banner-sub">batch-btf-3</span>
+    </a>
+  </div>
+
+  <!-- Core shared script -->
+  <script src="shared.js"></script>
+
+  <script>
+    // Helper to compute event-level promotion fields according to eventLevel parameter
+    function getBatchedPromoEventFields(fold, items) {
+      const mode = sessionStorage.getItem("eventLevel") || "first";
+      const foldUpper = fold.toUpperCase();
+
+      if (mode === "first") {
+        // First: the four promotion values of banner 1 of the set sent
+        return {
+          promotion_id: `batch-${fold}-1`,
+          promotion_name: `Batch ${foldUpper} Promo 1`,
+          creative_name: `batch_${fold}_creative_1`,
+          creative_slot: `batch_${fold}_slot_1`,
+          location_id: CONFIG.LOCATION_ID,
+          currency: CONFIG.CURRENCY
+        };
+      } else if (mode === "multi") {
+        // Multi: standard multi placeholder values
+        return {
+          promotion_id: "batch_multi",
+          promotion_name: "Batch Multi Promo",
+          creative_name: "batch_multi_creative",
+          creative_slot: "batch_multi_slot",
+          location_id: CONFIG.LOCATION_ID,
+          currency: CONFIG.CURRENCY
+        };
+      } else if (mode === "joined") {
+        // Joined: the three banners' values joined with commas, per field
+        return {
+          promotion_id: `batch-${fold}-1,batch-${fold}-2,batch-${fold}-3`,
+          promotion_name: `Batch ${foldUpper} Promo 1,Batch ${foldUpper} Promo 2,Batch ${foldUpper} Promo 3`,
+          creative_name: `batch_${fold}_creative_1,batch_${fold}_creative_2,batch_${fold}_creative_3`,
+          creative_slot: `batch_${fold}_slot_1,batch_${fold}_slot_2,batch_${fold}_slot_3`,
+          location_id: CONFIG.LOCATION_ID,
+          currency: CONFIG.CURRENCY
+        };
+      }
+      return {
+        promotion_id: `batch-${fold}-1`,
+        promotion_name: `Batch ${foldUpper} Promo 1`,
+        creative_name: `batch_${fold}_creative_1`,
+        creative_slot: `batch_${fold}_slot_1`,
+        location_id: CONFIG.LOCATION_ID,
+        currency: CONFIG.CURRENCY
+      };
+    }
+
+    // Set 1 (ATF): Fire one view_promotion event on load with the three set1 items
+    (function fireAtfBatch() {
+      const items = [
+        generateBanner("batched", "atf", 1),
+        generateBanner("batched", "atf", 2),
+        generateBanner("batched", "atf", 3)
+      ];
+      const eventFields = getBatchedPromoEventFields("atf", items);
+      push(CONFIG.EVENT_VIEW, eventFields, items);
+    })();
+
+    // Set 2 (BTF): Fire one view_promotion event when 50% visible (IntersectionObserver)
+    (function observeBtfBatch() {
+      const btfSection = document.getElementById("set-batch-btf");
+      let set2Fired = false;
+
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && entry.intersectionRatio >= CONFIG.VISIBILITY_THRESHOLD && !set2Fired) {
+            set2Fired = true;
+            obs.unobserve(entry.target);
+
+            const items = [
+              generateBanner("batched", "btf", 1),
+              generateBanner("batched", "btf", 2),
+              generateBanner("batched", "btf", 3)
+            ];
+            const eventFields = getBatchedPromoEventFields("btf", items);
+            push(CONFIG.EVENT_VIEW, eventFields, items);
+            document.body.setAttribute("data-fold-set2-fired", "true");
+          }
+        });
+      }, {
+        threshold: [CONFIG.VISIBILITY_THRESHOLD]
+      });
+
+      observer.observe(btfSection);
+    })();
+
+    // Banner click handling
+    document.querySelectorAll(".banner").forEach(bannerEl => {
+      bannerEl.addEventListener("click", function(e) {
+        e.preventDefault();
+
+        const promoId = bannerEl.dataset.promotionId;
+        const promoName = bannerEl.dataset.promotionName;
+        const creativeName = bannerEl.dataset.creativeName;
+        const creativeSlot = bannerEl.dataset.creativeSlot;
+        const fold = bannerEl.dataset.fold;
+        const N = parseInt(bannerEl.dataset.itemId.split("-").pop(), 10);
+
+        // 1. Build item from generator
+        const clickedItem = generateBanner("batched", fold, N);
+
+        // 2. Save active_promo in sessionStorage: promotion_id, promotion_name, creative_name, creative_slot, test_variant
+        const activePromo = {
+          promotion_id: promoId,
+          promotion_name: promoName,
+          creative_name: creativeName,
+          creative_slot: creativeSlot,
+          test_variant: "batched"
+        };
+        sessionStorage.setItem("active_promo", JSON.stringify(activePromo));
+        sessionStorage.setItem("test_variant", "batched");
+
+        // 3. Redirect once guard and fallback timer
+        let redirected = false;
+        function doRedirect() {
+          if (redirected) return;
+          redirected = true;
+          document.body.setAttribute("data-redirected", "true");
+          window.location.href = "shop.html";
+        }
+
+        const fallbackTimer = setTimeout(doRedirect, CONFIG.REDIRECT_FALLBACK_MS);
+
+        const eventFields = {
+          promotion_id: promoId,
+          promotion_name: promoName,
+          creative_name: creativeName,
+          creative_slot: creativeSlot,
+          location_id: CONFIG.LOCATION_ID,
+          currency: CONFIG.CURRENCY
+        };
+
+        // Push select_promotion with eventCallback and eventTimeout in extras
+        push(CONFIG.EVENT_SELECT, eventFields, [clickedItem], {
+          eventCallback: function() {
+            clearTimeout(fallbackTimer);
+            doRedirect();
+          },
+          eventTimeout: CONFIG.REDIRECT_FALLBACK_MS
+        });
+      });
+    });
+
+    // Mark page ready
+    document.body.setAttribute("data-ready", "true");
+  </script>
+</body>
+</html>

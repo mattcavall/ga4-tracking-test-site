@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GA4 Promotion Test: Cart</title>
+  <meta name="description" content="Cart page for GA4 promotion test" />
+
+  <!-- Inline CSS: Strictly zero animations and zero transitions -->
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: none !important;
+      animation: none !important;
+    }
+    :root {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --border-color: #333333;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --accent: #2196f3;
+      --danger: #e53935;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+    header {
+      width: 100%;
+      max-width: 960px;
+      height: 80px;
+      max-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-bg);
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 22px;
+      color: var(--text);
+    }
+    .header-links {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-nav {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .cart-container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 16px;
+    }
+    .cart-line {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .cart-line {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .line-info h2 {
+      font-size: 16px;
+      margin-bottom: 4px;
+    }
+    .line-sub {
+      font-size: 14px;
+      color: #81c784;
+    }
+    .btn-remove {
+      padding: 8px 16px;
+      background: var(--danger);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .empty-cart-message {
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 16px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+  </style>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      page_type: "cart",
+      test_variant: sessionStorage.getItem("test_variant") || "none"
+    });
+  </script>
+
+  <!-- Google Tag Manager -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE SCRIPT TAG BELOW -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body id="page-cart" data-testid="page-cart" data-step="step-4-cart" data-ready="false">
+  <!-- Google Tag Manager (noscript) -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE NOSCRIPT IFRAME BELOW -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header>
+    <h1>Cart</h1>
+    <div class="header-links">
+      <a href="checkout.html" id="link-checkout" data-testid="link-checkout" class="btn-nav" aria-label="Checkout">Checkout</a>
+      <a href="index.html" id="link-home" data-testid="link-home" class="btn-nav" aria-label="Home">Home</a>
+    </div>
+  </header>
+
+  <main class="cart-container" id="cart-container">
+    <!-- Cart lines dynamically rendered or static empty state -->
+  </main>
+
+  <!-- Core shared script -->
+  <script src="shared.js"></script>
+
+  <script>
+    function getStoredCart() {
+      try {
+        const raw = sessionStorage.getItem("cart");
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveStoredCart(cart) {
+      sessionStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function calculateCartTotal(cart) {
+      const sum = cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+      return parseFloat(sum.toFixed(2));
+    }
+
+    function renderCartLines() {
+      const container = document.getElementById("cart-container");
+      const cart = getStoredCart();
+      container.innerHTML = "";
+
+      if (cart.length === 0) {
+        const emptyMsg = document.createElement("div");
+        emptyMsg.className = "empty-cart-message";
+        emptyMsg.id = "empty-cart-message";
+        emptyMsg.textContent = "Your cart is empty.";
+        container.appendChild(emptyMsg);
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        const lineNum = index + 1;
+        const lineDiv = document.createElement("div");
+        lineDiv.className = "cart-line";
+        lineDiv.id = `cart-line-${lineNum}`;
+        lineDiv.setAttribute("data-testid", `cart-line-${lineNum}`);
+        lineDiv.setAttribute("data-item-id", item.item_id);
+        lineDiv.setAttribute("data-price", String(item.price));
+        lineDiv.setAttribute("data-qty", String(item.quantity || 1));
+
+        lineDiv.innerHTML = `
+          <div class="line-info">
+            <h2>${item.item_name}</h2>
+            <div class="line-sub">EUR ${item.price.toFixed(2)} x ${item.quantity || 1}</div>
+          </div>
+          <button class="btn-remove" id="btn-remove-${lineNum}" data-testid="btn-remove-${lineNum}" aria-label="Remove ${item.item_name}">
+            Remove ${item.item_name}
+          </button>
+        `;
+
+        container.appendChild(lineDiv);
+
+        // Bind remove button
+        const removeBtn = lineDiv.querySelector(`#btn-remove-${lineNum}`);
+        removeBtn.addEventListener("click", function() {
+          const currentCart = getStoredCart();
+          const removedItem = currentCart.splice(index, 1)[0];
+          saveStoredCart(currentCart);
+
+          // Push remove_from_cart
+          push("remove_from_cart", {
+            currency: CONFIG.CURRENCY,
+            value: parseFloat((removedItem.price * (removedItem.quantity || 1)).toFixed(2))
+          }, [removedItem]);
+
+          // Re-render
+          renderCartLines();
+        });
+      });
+    }
+
+    // On load: With an empty cart, show a message and push nothing.
+    // Push view_cart only when at least one line exists.
+    (function fireViewCart() {
+      const cart = getStoredCart();
+      renderCartLines();
+
+      if (cart.length > 0) {
+        push("view_cart", {
+          currency: CONFIG.CURRENCY,
+          value: calculateCartTotal(cart)
+        }, cart);
+      }
+    })();
+
+    // Mark page ready
+    document.body.setAttribute("data-ready", "true");
+  </script>
+</body>
+</html>

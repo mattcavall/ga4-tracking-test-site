@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GA4 Promotion Test: Shop</title>
+  <meta name="description" content="Shop product catalog page for GA4 promotion test" />
+
+  <!-- Inline CSS: Strictly zero animations and zero transitions -->
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: none !important;
+      animation: none !important;
+    }
+    :root {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --border-color: #333333;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --accent: #2196f3;
+      --btn-bg: #2a2a2a;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+    header {
+      width: 100%;
+      max-width: 960px;
+      height: 80px;
+      max-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-bg);
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 22px;
+      color: var(--text);
+    }
+    .header-links {
+      display: flex;
+      gap: 12px;
+    }
+    .btn-nav {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .products-container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 16px;
+    }
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    @media (min-width: 600px) {
+      .product-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+    .product-info h2 {
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+    .product-price {
+      font-size: 16px;
+      color: #81c784;
+      font-weight: 600;
+    }
+    .product-sku {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-action {
+      padding: 10px 18px;
+      background: var(--btn-bg);
+      color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-add {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+  </style>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      page_type: "shop",
+      test_variant: sessionStorage.getItem("test_variant") || "none"
+    });
+  </script>
+
+  <!-- Google Tag Manager -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE SCRIPT TAG BELOW -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body id="page-shop" data-testid="page-shop" data-step="step-3-shop" data-ready="false">
+  <!-- Google Tag Manager (noscript) -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE NOSCRIPT IFRAME BELOW -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header>
+    <h1>Shop</h1>
+    <div class="header-links">
+      <a href="cart.html" id="link-cart" data-testid="link-cart" class="btn-nav" aria-label="Cart">Cart</a>
+      <a href="index.html" id="link-home" data-testid="link-home" class="btn-nav" aria-label="Home">Home</a>
+    </div>
+  </header>
+
+  <main class="products-container">
+    <!-- Product 1 -->
+    <div class="product-card" id="product-1" data-testid="product-1" data-item-id="SKU-SHOP-1" data-price="25" data-qty="1">
+      <div class="product-info">
+        <h2>Shop Item 1</h2>
+        <div class="product-price">EUR 25.00</div>
+        <div class="product-sku">SKU: SKU-SHOP-1</div>
+      </div>
+      <div class="actions">
+        <button class="btn-action" id="btn-view-1" data-testid="btn-view-1" aria-label="View Shop Item 1">View Shop Item 1</button>
+        <button class="btn-action btn-add" id="btn-add-1" data-testid="btn-add-1" aria-label="Add Shop Item 1">Add Shop Item 1</button>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card" id="product-2" data-testid="product-2" data-item-id="SKU-SHOP-2" data-price="35" data-qty="1">
+      <div class="product-info">
+        <h2>Shop Item 2</h2>
+        <div class="product-price">EUR 35.00</div>
+        <div class="product-sku">SKU: SKU-SHOP-2</div>
+      </div>
+      <div class="actions">
+        <button class="btn-action" id="btn-view-2" data-testid="btn-view-2" aria-label="View Shop Item 2">View Shop Item 2</button>
+        <button class="btn-action btn-add" id="btn-add-2" data-testid="btn-add-2" aria-label="Add Shop Item 2">Add Shop Item 2</button>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card" id="product-3" data-testid="product-3" data-item-id="SKU-SHOP-3" data-price="45" data-qty="1">
+      <div class="product-info">
+        <h2>Shop Item 3</h2>
+        <div class="product-price">EUR 45.00</div>
+        <div class="product-sku">SKU: SKU-SHOP-3</div>
+      </div>
+      <div class="actions">
+        <button class="btn-action" id="btn-view-3" data-testid="btn-view-3" aria-label="View Shop Item 3">View Shop Item 3</button>
+        <button class="btn-action btn-add" id="btn-add-3" data-testid="btn-add-3" aria-label="Add Shop Item 3">Add Shop Item 3</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Core shared script -->
+  <script src="shared.js"></script>
+
+  <script>
+    // Generate shop items list
+    const shopProducts = generateShopItems();
+
+    // On load: push view_item_list with the three products
+    (function fireViewItemList() {
+      push("view_item_list", {
+        item_list_id: "shop_main",
+        item_list_name: "Shop Main"
+      }, shopProducts);
+    })();
+
+    // View product button handler: pushes view_item
+    for (let N = 1; N <= 3; N++) {
+      const viewBtn = document.getElementById(`btn-view-${N}`);
+      if (viewBtn) {
+        viewBtn.addEventListener("click", function() {
+          const product = shopProducts[N - 1];
+          push("view_item", {
+            currency: CONFIG.CURRENCY,
+            value: product.price
+          }, [product]);
+        });
+      }
+
+      // Add to cart button handler: pushes add_to_cart and stores line in sessionStorage cart
+      const addBtn = document.getElementById(`btn-add-${N}`);
+      if (addBtn) {
+        addBtn.addEventListener("click", function() {
+          const product = shopProducts[N - 1];
+
+          // Store product in cart
+          let cart = [];
+          try {
+            const raw = sessionStorage.getItem("cart");
+            if (raw) cart = JSON.parse(raw);
+          } catch (e) {
+            cart = [];
+          }
+
+          const cartItem = { ...product, quantity: 1 };
+          cart.push(cartItem);
+          sessionStorage.setItem("cart", JSON.stringify(cart));
+
+          push("add_to_cart", {
+            currency: CONFIG.CURRENCY,
+            value: product.price
+          }, [cartItem]);
+        });
+      }
+    }
+
+    // Mark page ready
+    document.body.setAttribute("data-ready", "true");
+  </script>
+</body>
+</html>

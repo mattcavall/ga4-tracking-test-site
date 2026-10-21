@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GA4 Promotion Test: Checkout</title>
+  <meta name="description" content="Checkout page for GA4 promotion test" />
+
+  <!-- Inline CSS: Strictly zero animations and zero transitions -->
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: none !important;
+      animation: none !important;
+    }
+    :root {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --border-color: #333333;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --accent: #2196f3;
+      --success: #4caf50;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      min-height: 100vh;
+      padding-bottom: 40px;
+    }
+    header {
+      width: 100%;
+      max-width: 960px;
+      height: 80px;
+      max-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--card-bg);
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 22px;
+      color: var(--text);
+    }
+    .btn-nav {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .checkout-container {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 0 16px;
+    }
+    .checkout-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .checkout-card h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+    }
+    .checkout-summary {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .checkout-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    @media (min-width: 600px) {
+      .checkout-buttons {
+        flex-direction: row;
+      }
+    }
+    .btn-step {
+      padding: 12px 20px;
+      background: var(--card-bg);
+      color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+    }
+    .btn-place {
+      background: var(--success);
+      border-color: var(--success);
+    }
+  </style>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      page_type: "checkout",
+      test_variant: sessionStorage.getItem("test_variant") || "none"
+    });
+  </script>
+
+  <!-- Google Tag Manager -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE SCRIPT TAG BELOW -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body id="page-checkout" data-testid="page-checkout" data-step="step-5-checkout" data-ready="false">
+  <!-- Google Tag Manager (noscript) -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE NOSCRIPT IFRAME BELOW -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <header>
+    <h1>Checkout</h1>
+    <a href="index.html" id="link-home" data-testid="link-home" class="btn-nav" aria-label="Home">Home</a>
+  </header>
+
+  <main class="checkout-container">
+    <div class="checkout-card">
+      <h2>Order Confirmation</h2>
+      <div class="checkout-summary" id="checkout-summary">
+        Loading cart details...
+      </div>
+      <div class="checkout-buttons">
+        <button class="btn-step" id="btn-add-shipping" data-testid="btn-add-shipping" aria-label="Add Shipping Info">
+          Add Shipping Info
+        </button>
+        <button class="btn-step" id="btn-add-payment" data-testid="btn-add-payment" aria-label="Add Payment Info">
+          Add Payment Info
+        </button>
+        <button class="btn-step btn-place" id="btn-place-order" data-testid="btn-place-order" aria-label="Place Order">
+          Place Order
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Core shared script -->
+  <script src="shared.js"></script>
+
+  <script>
+    function getStoredCart() {
+      try {
+        const raw = sessionStorage.getItem("cart");
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function calculateCartTotal(cart) {
+      const sum = cart.reduce((acc, item) => acc + (item.price * (item.quantity || 1)), 0);
+      return parseFloat(sum.toFixed(2));
+    }
+
+    const cart = getStoredCart();
+    const cartTotal = calculateCartTotal(cart);
+
+    // Update order summary text
+    const summaryEl = document.getElementById("checkout-summary");
+    if (summaryEl) {
+      summaryEl.innerHTML = `
+        <div>Items in order: <strong>${cart.length}</strong></div>
+        <div>Order subtotal: <strong>EUR ${cartTotal.toFixed(2)}</strong></div>
+        <div>Shipping: <strong>EUR 3.33</strong> | Tax: <strong>EUR 1.11</strong></div>
+      `;
+    }
+
+    // On load: push begin_checkout
+    (function fireBeginCheckout() {
+      push("begin_checkout", {
+        currency: CONFIG.CURRENCY,
+        value: cartTotal,
+        coupon: "ORDER_SAVE10"
+      }, cart);
+    })();
+
+    // btn-add-shipping pushes add_shipping_info
+    const shippingBtn = document.getElementById("btn-add-shipping");
+    if (shippingBtn) {
+      shippingBtn.addEventListener("click", function() {
+        push("add_shipping_info", {
+          currency: CONFIG.CURRENCY,
+          value: cartTotal,
+          coupon: "ORDER_SAVE10",
+          shipping_tier: "Ground"
+        }, cart);
+      });
+    }
+
+    // btn-add-payment pushes add_payment_info
+    const paymentBtn = document.getElementById("btn-add-payment");
+    if (paymentBtn) {
+      paymentBtn.addEventListener("click", function() {
+        push("add_payment_info", {
+          currency: CONFIG.CURRENCY,
+          value: cartTotal,
+          coupon: "ORDER_SAVE10",
+          payment_type: "Credit Card"
+        }, cart);
+      });
+    }
+
+    // btn-place-order pushes purchase with transaction_id T_ + timestamp + 4-digit random number
+    const placeOrderBtn = document.getElementById("btn-place-order");
+    if (placeOrderBtn) {
+      placeOrderBtn.addEventListener("click", function() {
+        const timestamp = Date.now();
+        const rand4 = Math.floor(1000 + Math.random() * 9000);
+        const transactionId = `T_${timestamp}_${rand4}`;
+
+        const purchaseFields = {
+          currency: CONFIG.CURRENCY,
+          value: cartTotal,
+          transaction_id: transactionId,
+          coupon: "ORDER_SAVE10",
+          shipping: 3.33,
+          tax: 1.11,
+          customer_type: "new"
+        };
+
+        // Redirect guard and fallback logic (same as banner clicks)
+        let redirected = false;
+        function doRedirect() {
+          if (redirected) return;
+          redirected = true;
+          document.body.setAttribute("data-redirected", "true");
+          window.location.href = "index.html";
+        }
+
+        const fallbackTimer = setTimeout(doRedirect, CONFIG.REDIRECT_FALLBACK_MS);
+
+        // After the purchase push, clear cart and active_promo
+        push("purchase", purchaseFields, cart, {
+          eventCallback: function() {
+            clearTimeout(fallbackTimer);
+            doRedirect();
+          },
+          eventTimeout: CONFIG.REDIRECT_FALLBACK_MS
+        });
+
+        // Clear sessionStorage cart and active_promo
+        sessionStorage.removeItem("cart");
+        sessionStorage.removeItem("active_promo");
+      });
+    }
+
+    // Mark page ready
+    document.body.setAttribute("data-ready", "true");
+  </script>
+</body>
+</html>

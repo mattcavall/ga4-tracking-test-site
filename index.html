@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GA4 Promotion Test: Home</title>
+  <meta name="description" content="Static test site for GA4 promotion tracking: home page" />
+
+  <!-- Inline CSS: Dark mode, responsive design, zero animations, zero transitions -->
+  <style>
+    /* Reset and baseline styles */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      transition: none !important;
+      animation: none !important;
+    }
+    :root {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --border-color: #333333;
+      --text: #ffffff;
+      --text-muted: #aaaaaa;
+      --accent: #2196f3;
+      --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    body {
+      font-family: var(--font-family);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 32px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+    p {
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    @media (min-width: 480px) {
+      .button-group {
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      background-color: var(--accent);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      border: 1px solid transparent;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+    }
+  </style>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      page_type: "home",
+      test_variant: "none"
+    });
+  </script>
+
+  <!-- Google Tag Manager -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE SCRIPT TAG BELOW -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-XXXXXXX');</script>
+  <!-- End Google Tag Manager -->
+</head>
+<body id="page-index" data-testid="page-index" data-step="step-1-home" data-ready="false">
+  <!-- Google Tag Manager (noscript) -->
+  <!-- REPLACE GTM-XXXXXXX WITH YOUR GTM CONTAINER ID IN THE NOSCRIPT IFRAME BELOW -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-XXXXXXX"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+
+  <main class="container">
+    <h1>GA4 Promotion Test Site</h1>
+    <p>A static test site for verifying GA4 promotion tracking and attribution.</p>
+    <div class="button-group">
+      <a href="batched.html" id="btn-test-a" data-testid="btn-test-a" class="btn" aria-label="Test A: Batched">Test A: Batched</a>
+      <a href="separate.html" id="btn-test-b" data-testid="btn-test-b" class="btn" aria-label="Test B: Separate">Test B: Separate</a>
+    </div>
+  </main>
+
+  <!-- Core shared script -->
+  <script src="shared.js"></script>
+
+  <!-- Page ready marker -->
+  <script>
+    document.body.setAttribute("data-ready", "true");
+  </script>
+</body>
+</html>
