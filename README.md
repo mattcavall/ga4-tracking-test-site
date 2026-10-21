@@ -107,7 +107,13 @@ window.testApi.getPromoSummary();
 // Validate all captured pushes against GA4 rules (returns empty array [] if valid)
 window.testApi.validate();
 
-// Clear sessionStorage and reset recorded pushes
+// Dynamically set consent state ('granted' or 'denied')
+window.testApi.setConsent("granted"); // or "denied"
+
+// Read current consent state
+window.testApi.getConsent();
+
+// Clear sessionStorage and reset recorded pushes (restores default granted consent)
 window.testApi.reset();
 ```
 
@@ -115,11 +121,12 @@ window.testApi.reset();
 
 1. **GTM Container ID**: The site is configured with container ID `GTM-KGTK8ZXX` across all pages.
 2. **Fallback Redirect**: The redirect fallback timer is set to 500ms (`CONFIG.REDIRECT_FALLBACK_MS`), which guarantees smooth page transitions even when the GTM container ID is a placeholder or blocked by ad blockers.
-3. **Storage Persistence**: `sessionStorage` is used to persist URL parameter overrides (`carry`, `creative`, `run`, `eventLevel`), active promotion attribution, and cart items between page navigations in the same tab.
+3. **Storage Persistence**: `sessionStorage` is used to persist URL parameter overrides (`carry`, `creative`, `run`, `eventLevel`, `consent`), active promotion attribution, and cart items between page navigations in the same tab.
 4. **Zero External Dependencies**: The entire project uses pure vanilla HTML, vanilla CSS, and vanilla JavaScript without any external libraries or build tools.
 5. **No Animations**: In strict accordance with stability rules, CSS transitions and animations are globally disabled (`transition: none !important; animation: none !important;`).
 6. **Key Ordering**: All item objects strictly follow the required 26-key sequence from `item_id` to `test_approach`. Numbers are always output as finite JSON numbers rounded to two decimal places.
 7. **Post-Purchase Display**: Per user instruction, the checkout page does not redirect to `index.html` after placing an order. Instead, it displays an on-page order confirmation box with transaction ID, items purchased, and order total so that the purchase event, dataLayer, and `window.testApi` can be inspected in place.
+8. **Cookie Consent Mode v2**: All cookie consents (`analytics_storage`, `ad_storage`, `ad_user_data`, `ad_personalization`) are automatically granted by default on every page before GTM loads. A toggle switch is available on the home page (`#btn-home-consent-toggle`), in the debug panel (`#btn-consent-toggle`), via URL parameter `?consent=granted|denied`, or programmatically via `window.testApi.setConsent()`.
 
 ## MANUAL CHECK
 

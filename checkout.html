@@ -141,9 +141,30 @@
     }
   </style>
 
-  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <!-- Google Consent Mode v2 (Default: Granted, supports URL parameter ?consent=granted|denied and sessionStorage) -->
   <script>
     window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    (function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var consentParam = urlParams.get("consent");
+      if (consentParam === "granted" || consentParam === "denied") {
+        sessionStorage.setItem("consent_state", consentParam);
+      }
+      var currentConsent = sessionStorage.getItem("consent_state") || "granted";
+
+      gtag("consent", "default", {
+        "ad_storage": currentConsent,
+        "analytics_storage": currentConsent,
+        "ad_user_data": currentConsent,
+        "ad_personalization": currentConsent
+      });
+    })();
+  </script>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
     window.dataLayer.push({
       page_type: "checkout",
       test_variant: sessionStorage.getItem("test_variant") || "none"

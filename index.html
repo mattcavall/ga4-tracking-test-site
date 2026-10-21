@@ -82,9 +82,30 @@
     }
   </style>
 
-  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <!-- Google Consent Mode v2 (Default: Granted, supports URL parameter ?consent=granted|denied and sessionStorage) -->
   <script>
     window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+
+    (function() {
+      var urlParams = new URLSearchParams(window.location.search);
+      var consentParam = urlParams.get("consent");
+      if (consentParam === "granted" || consentParam === "denied") {
+        sessionStorage.setItem("consent_state", consentParam);
+      }
+      var currentConsent = sessionStorage.getItem("consent_state") || "granted";
+
+      gtag("consent", "default", {
+        "ad_storage": currentConsent,
+        "analytics_storage": currentConsent,
+        "ad_user_data": currentConsent,
+        "ad_personalization": currentConsent
+      });
+    })();
+  </script>
+
+  <!-- Pre-GTM dataLayer initialization with page_type and test_variant -->
+  <script>
     window.dataLayer.push({
       page_type: "home",
       test_variant: "none"
@@ -111,6 +132,16 @@
     <div class="button-group">
       <a href="batched.html" id="btn-test-a" data-testid="btn-test-a" class="btn" aria-label="Test A: Batched">Test A: Batched</a>
       <a href="separate.html" id="btn-test-b" data-testid="btn-test-b" class="btn" aria-label="Test B: Separate">Test B: Separate</a>
+    </div>
+
+    <!-- Cookie Consent Switch Control -->
+    <div id="consent-control" data-testid="consent-control" style="margin-top: 28px; padding: 14px; border: 1px solid var(--border-color); border-radius: 6px; background: rgba(255, 255, 255, 0.03); text-align: center;">
+      <div style="font-size: 14px; margin-bottom: 8px;">
+        Cookie Consent: <strong id="consent-status-label" data-testid="consent-status-label" style="color: #81c784;">GRANTED</strong>
+      </div>
+      <button id="btn-home-consent-toggle" data-testid="btn-home-consent-toggle" class="btn" style="padding: 6px 16px; font-size: 13px; background: #333333; color: #ffffff; border: 1px solid #555555;" aria-label="Toggle Consent Mode">
+        Switch to Denied
+      </button>
     </div>
   </main>
 

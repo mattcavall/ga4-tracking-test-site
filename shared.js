@@ -91,6 +91,16 @@ function initSessionAndConfig() {
   if (sessionStorage.getItem("creative")) {
     CONFIG.CARRY_CREATIVE = sessionStorage.getItem("creative") === "on";
   }
+
+  // consent=granted|denied. Default: granted
+  if (urlParams.has("consent")) {
+    const cParam = urlParams.get("consent");
+    if (cParam === "granted" || cParam === "denied") {
+      sessionStorage.setItem("consent_state", cParam);
+    }
+  } else if (!sessionStorage.getItem("consent_state")) {
+    sessionStorage.setItem("consent_state", "granted");
+  }
 }
 
 // ==================== ITEM KEY ORDER FORMATTER ====================
@@ -503,6 +513,45 @@ function push(eventName, eventLevelFields = {}, items = [], extras = {}) {
   refreshDebugPanel();
 }
 
+// ==================== CONSENT MANAGEMENT ====================
+function getConsent() {
+  return sessionStorage.getItem("consent_state") || "granted";
+}
+
+function setConsent(status) {
+  const normalized = status === "denied" ? "denied" : "granted";
+  sessionStorage.setItem("consent_state", normalized);
+  if (typeof window.gtag === "function") {
+    window.gtag("consent", "update", {
+      "ad_storage": normalized,
+      "analytics_storage": normalized,
+      "ad_user_data": normalized,
+      "ad_personalization": normalized
+    });
+  }
+  updateConsentUI();
+  refreshDebugPanel();
+}
+
+function updateConsentUI() {
+  const current = getConsent();
+  const isGranted = current === "granted";
+
+  // Update home page consent label if present
+  const homeLabel = document.getElementById("consent-status-label");
+  if (homeLabel) {
+    homeLabel.textContent = current.toUpperCase();
+    homeLabel.style.color = isGranted ? "#81c784" : "#e57373";
+  }
+
+  // Update home page toggle button if present
+  const homeBtn = document.getElementById("btn-home-consent-toggle");
+  if (homeBtn) {
+    homeBtn.textContent = isGranted ? "Switch to Denied" : "Switch to Granted";
+    homeBtn.setAttribute("aria-label", isGranted ? "Switch to Denied" : "Switch to Granted");
+  }
+}
+
 // ==================== DEBUG PANEL ====================
 // Fixed box listing every push as JSON, red border for invalid pushes,
 // plus active_promo and the current carry and eventLevel modes.
@@ -550,12 +599,28 @@ function refreshDebugPanel() {
     const creativeMode = CONFIG.CARRY_CREATIVE ? "on" : "off";
     const eventLevel = sessionStorage.getItem("eventLevel") || "first";
     const runId = sessionStorage.getItem("test_run_id") || "manual";
+    const consentVal = getConsent();
+    const isGranted = consentVal === "granted";
+
     header.innerHTML = `
       <div style="color: #64b5f6; font-size: 12px; margin-bottom: 4px;">GA4 TRACKING DEBUG PANEL</div>
       <div><strong>active_promo:</strong> <span style="color:#81c784;">${activePromo}</span></div>
       <div><strong>carry:</strong> ${carryMode} | <strong>creative:</strong> ${creativeMode}</div>
       <div><strong>eventLevel:</strong> ${eventLevel} | <strong>run:</strong> ${runId}</div>
+      <div style="margin-top: 6px; padding-top: 4px; border-top: 1px solid #333; display: flex; align-items: center; justify-content: space-between;">
+        <span><strong>consent:</strong> <span id="debug-consent-val" style="color: ${isGranted ? '#81c784' : '#e57373'}; font-weight: bold;">${consentVal.toUpperCase()}</span></span>
+        <button id="btn-consent-toggle" data-testid="btn-consent-toggle" aria-label="Toggle Consent" style="background: ${isGranted ? '#c62828' : '#2e7d32'}; color: #ffffff; border: 1px solid #777; border-radius: 3px; padding: 2px 8px; font-size: 10px; cursor: pointer;">
+          ${isGranted ? 'Switch to Denied' : 'Switch to Granted'}
+        </button>
+      </div>
     `;
+
+    const toggleBtn = document.getElementById("btn-consent-toggle");
+    if (toggleBtn) {
+      toggleBtn.onclick = function() {
+        setConsent(getConsent() === "granted" ? "denied" : "granted");
+      };
+    }
   }
 
   // Render entries
@@ -647,9 +712,28 @@ window.testApi = {
     return invalid;
   },
 
-  // reset() clears sessionStorage and pushes
+  // setConsent() dynamically updates consent state
+  setConsent: function(status) {
+    setConsent(status);
+  },
+
+  // getConsent() returns current consent state
+  getConsent: function() {
+    return getConsent();
+  },
+
+  // reset() clears sessionStorage, pushes, and restores default consent
   reset: function() {
     sessionStorage.clear();
+    sessionStorage.setItem("consent_state", "granted");
+    if (typeof window.gtag === "function") {
+      window.gtag("consent", "update", {
+        "ad_storage": "granted",
+        "analytics_storage": "granted",
+        "ad_user_data": "granted",
+        "ad_personalization": "granted"
+      });
+    }
     window.__pushes = [];
     document.body.removeAttribute("data-last-event");
     const list = document.getElementById("debug-panel-entries");
@@ -658,6 +742,7 @@ window.testApi = {
     if (panel && panel.parentNode) {
       panel.parentNode.removeChild(panel);
     }
+    updateConsentUI();
   }
 };
 
@@ -667,15 +752,31 @@ window.generateBanner = generateBanner;
 window.generateShopItems = generateShopItems;
 window.formatItem = formatItem;
 window.push = push;
+window.getConsent = getConsent;
+window.setConsent = setConsent;
+window.updateConsentUI = updateConsentUI;
 
 // ==================== AUTO-INITIALIZATION ====================
 (function() {
   window.dataLayer = window.dataLayer || [];
   window.__pushes = window.__pushes || [];
   initSessionAndConfig();
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", refreshDebugPanel);
-  } else {
+
+  function onReady() {
     refreshDebugPanel();
+    updateConsentUI();
+
+    const homeBtn = document.getElementById("btn-home-consent-toggle");
+    if (homeBtn) {
+      homeBtn.addEventListener("click", function() {
+        setConsent(getConsent() === "granted" ? "denied" : "granted");
+      });
+    }
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", onReady);
+  } else {
+    onReady();
   }
 })();
