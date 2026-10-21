@@ -1,6 +1,6 @@
 {
   "exportFormatVersion": 2,
-  "exportTime": "2026-10-21T12:55:18.594Z",
+  "exportTime": "2026-10-21T13:50:29.891Z",
   "containerVersion": {
     "path": "accounts/1/containers/1/versions/0",
     "accountId": "1",
@@ -22,6 +22,7 @@
         "tagId": "1",
         "name": "Google Tag - GA4 Configuration",
         "type": "googtag",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -39,6 +40,7 @@
         "tagId": "2",
         "name": "GA4 - Event - view_promotion",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -47,18 +49,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -197,6 +194,7 @@
         "tagId": "3",
         "name": "GA4 - Event - select_promotion",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -205,18 +203,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -355,6 +348,7 @@
         "tagId": "4",
         "name": "GA4 - Event - view_item_list",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -363,18 +357,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -513,6 +502,7 @@
         "tagId": "5",
         "name": "GA4 - Event - view_item",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -521,18 +511,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -671,6 +656,7 @@
         "tagId": "6",
         "name": "GA4 - Event - add_to_cart",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -679,18 +665,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -829,6 +810,7 @@
         "tagId": "7",
         "name": "GA4 - Event - view_cart",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -837,18 +819,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -987,6 +964,7 @@
         "tagId": "8",
         "name": "GA4 - Event - remove_from_cart",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -995,18 +973,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -1145,6 +1118,7 @@
         "tagId": "9",
         "name": "GA4 - Event - begin_checkout",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -1153,18 +1127,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -1303,6 +1272,7 @@
         "tagId": "10",
         "name": "GA4 - Event - add_shipping_info",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -1311,18 +1281,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -1461,6 +1426,7 @@
         "tagId": "11",
         "name": "GA4 - Event - add_payment_info",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -1469,18 +1435,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
@@ -1619,6 +1580,7 @@
         "tagId": "12",
         "name": "GA4 - Event - purchase",
         "type": "gaawe",
+        "tagFiringOption": "ONCE_PER_EVENT",
         "parameter": [
           {
             "type": "TEMPLATE",
@@ -1627,18 +1589,13 @@
           },
           {
             "type": "TEMPLATE",
-            "key": "measurementId",
+            "key": "measurementIdOverride",
             "value": "{{const - GA4 Measurement ID}}"
           },
           {
             "type": "BOOLEAN",
             "key": "sendEcommerceData",
             "value": "true"
-          },
-          {
-            "type": "TEMPLATE",
-            "key": "getEcommerceDataFrom",
-            "value": "dataLayer"
           },
           {
             "type": "LIST",
